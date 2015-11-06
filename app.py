@@ -7,12 +7,20 @@ app = Flask(__name__)
 @app.route("/p/<tag>")
 def p(tag = "1"):
     url = """
-
-"""
+    http://pokeapi.co/api/v1/pokemon/%s
+    """
     url = url%(tag)
     request = urllib2.urlopen(url)
     result = request.read()
     r = json.loads(result)
+    moves = []
+    for item in r["moves"]:
+        try:
+            newitem = item["name"]
+            moves.append(newitem)
+        except:
+            pass
+    return render_template("tagged.html", urls = moves)
 
 
 @app.route("/")
