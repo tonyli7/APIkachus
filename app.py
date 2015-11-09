@@ -20,7 +20,7 @@ def p(tag = "1"):
             moves.append(newitem)
         except:
             pass
-    return render_template("tagged.html", urls = moves)
+    return render_template("tagged.html", data = moves)
 
 
 @app.route("/")
