@@ -1,5 +1,5 @@
 import urllib2,json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import utils
 
 
@@ -25,7 +25,7 @@ def pokemon(tag=""):
                 request_url = urllib2.urlopen(url)
                 result = request_url.read()
                 r = json.loads(result)
-                return render_template("tagged.html", r=r['name'].lower())
+                return redirect("/pokemon/"+str(tag))
             else:#if not a valid pokemon
                 error="Not a valid Pokemon"
                 return render_template("search.html", error=error)
