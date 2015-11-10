@@ -19,7 +19,9 @@ def pokemon(tag=""):
             return render_template("search.html")#search
         else:
             pokemon=request.form["pokemon"].lower()#stores a lowercase string pokemon
-            if utils.isValidPokemon(pokemon,POKELIST):#checks if pokemon is valid
+            if utils.isValidNumber(pokemon):
+                return redirect("/pokemon/" + str(pokemon) )
+            elif utils.isValidPokemon(pokemon,POKELIST):#checks if pokemon is valid
                 tag=POKELIST.index(pokemon)+1#pokemon dex number
                 url = url%(tag)
                 request_url = urllib2.urlopen(url)

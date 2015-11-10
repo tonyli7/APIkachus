@@ -18,8 +18,7 @@ def isValidPokemon(pkmn, pokelist):
     
     if pkmn in pokelist:
         return True
-    return False
-
+    return isValidNumber(pkmn)
 
 def getPokeList():
     """
@@ -40,8 +39,8 @@ def getPokeList():
 
    
 def isValidNumber(thestring):
-    if thestring.isDigit():
-        if int(thestring) > 718:
+    if str(thestring).isdigit():
+        if int(str(thestring)) > 718:
             return False
     else:
         return False
