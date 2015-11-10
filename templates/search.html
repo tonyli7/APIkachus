@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+
+<h1>Search for a pokemon</h1>
+
+<form method="POST">
+  <h2>Enter any pokemon</h2>
+  <input type="text" name="pokemon">
+  <input type="submit" name="button" value="Go">
+</form>
+<br>
+{% if error %}
+<h2> {{error}}</h2>
+{% endif %}

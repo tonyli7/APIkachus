@@ -1,0 +1,5 @@
+
+def isValidPokemon(pkmn, pokelist):
+    if pkmn in pokelist:
+        return True
+    return False
