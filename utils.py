@@ -39,3 +39,10 @@ def getPokeList():
     return pklist
 
    
+def isValidNumber(thestring):
+    if thestring.isDigit():
+        if int(thestring) > 718:
+            return False
+    else:
+        return False
+    return True
