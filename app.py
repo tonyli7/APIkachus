@@ -14,24 +14,22 @@ def pokemon(tag=""):
     url = """
     http://pokeapi.co/api/v1/pokemon/%s
     """
-  
-    
-    if tag=="":
+    if tag=="":#if the tag is empty
         if request.method=="GET":
-            return render_template("search.html")
+            return render_template("search.html")#search
         else:
-            pokemon=request.form["pokemon"].lower()
-            if utils.isValidPokemon(pokemon,POKELIST):
-                tag=POKELIST.index(pokemon)+1
+            pokemon=request.form["pokemon"].lower()#stores a lowercase string pokemon
+            if utils.isValidPokemon(pokemon,POKELIST):#checks if pokemon is valid
+                tag=POKELIST.index(pokemon)+1#pokemon dex number
                 url = url%(tag)
                 request_url = urllib2.urlopen(url)
                 result = request_url.read()
                 r = json.loads(result)
                 return render_template("tagged.html", r=r['name'].lower())
-            else:
+            else:#if not a valid pokemon
                 error="Not a valid Pokemon"
                 return render_template("search.html", error=error)
-    else:
+    else:#if tag is not empty
         url = url%(tag)
         request_url = urllib2.urlopen(url)
         result = request_url.read()
