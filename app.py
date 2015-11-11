@@ -1,6 +1,7 @@
-import urllib2,json
+import json
 from flask import Flask, render_template, request, redirect
 import utils
+from urllib.request import urlopen
 
 
 POKELIST=utils.getPokeList()
@@ -24,8 +25,8 @@ def pokemon(tag=""):
             elif utils.isValidPokemon(pokemon,POKELIST):#checks if pokemon is valid
                 tag=POKELIST.index(pokemon)+1#pokemon dex number
                 url = url%(tag)
-                request_url = urllib2.urlopen(url)
-                result = request_url.read()
+                request_url = urlopen(url)
+                result = request_url.read().decode('utf-8')
                 r = json.loads(result)
                 return redirect("/pokemon/"+str(tag))
             else:#if not a valid pokemon
@@ -33,8 +34,8 @@ def pokemon(tag=""):
                 return render_template("search.html", error=error)
     else:#if tag is not empty
         url = url%(tag)
-        request_url = urllib2.urlopen(url)
-        result = request_url.read()
+        request_url = urlopen(url)
+        result = request_url.read().decode('utf-8')
         r = json.loads(result)
         return render_template("tagged.html", r=r['name'].lower())
    # abilities=[]
