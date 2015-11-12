@@ -1,6 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect
-import utils
+import utils, random
 from urllib.request import urlopen
 
 
@@ -37,7 +37,11 @@ def pokemon(tag=""):
         request_url = urlopen(url)
         result = request_url.read().decode('utf-8')
         r = json.loads(result)
-        return render_template("tagged.html", r=r['name'].lower())
+        return render_template("tagged.html",
+                               types=r['types'],
+                               name=r['name'].lower(),
+                               species=r['species'],
+                               move=r["moves"][(random.randrange(len(r["moves"])))]['name'].lower())
    # abilities=[]
    # for item in r['abilities']:
    #     try:
