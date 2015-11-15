@@ -36,7 +36,11 @@ def pokemon(tag=""):
         request_url = urllib2.urlopen(url)
         result = request_url.read()
         r = json.loads(result)
-        return render_template("tagged.html", r=r['name'].lower())
+        return render_template("tagged.html",
+                               types=r['types'],
+                               name=r['name'].lower(),
+                               species=r['species'],
+                               move=r["moves"][(random.randrange(len(r["moves"])))]['name'].lower())
    # abilities=[]
    # for item in r['abilities']:
    #     try:
