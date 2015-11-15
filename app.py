@@ -1,4 +1,4 @@
-import urllib2,json
+import urllib2,json, random
 from flask import Flask, render_template, request, redirect
 import utils
 
@@ -52,7 +52,20 @@ def pokemon(tag=""):
     
 @app.route("/")
 def index():
-    return "hello"
+    url="""
+    https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=barack%20obama&userip=192.168.1.112
+    """
+    request_url = urllib2.urlopen(url)
+    result = request_url.read()
+    r = json.loads(result)
+    info=r['responseData']['results'][random.randrange(3)]
+    imglist=[]
+    for imgurl in info:
+        for ext in ['.jpg','.png','.jpeg']:
+            if ext in str(info[imgurl]).lower():
+                imglist+=[str(info[imgurl])]
+    randimg=imglist[random.randrange(len(imglist))]
+    return render_template("test.html", randimg=randimg)
 
 if __name__ == "__main__":
    app.debug = True
