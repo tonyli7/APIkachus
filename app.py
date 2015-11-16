@@ -63,7 +63,7 @@ def pokemon(tag=""):
                 if ext in ((info[imgurl]).lower()).encode('utf-8').strip():
                     imglist+=[((info[imgurl])).encode('utf-8').strip()]
         #----------------------------------------------------------------
-        randimg=imglist[random.randrange(len(imglist))]
+        randimg=str(imglist[random.randrange(len(imglist))])
         return render_template("tagged.html",
                                types=r['types'],
                                name=r['name'].lower(),
