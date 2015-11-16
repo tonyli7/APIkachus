@@ -33,9 +33,7 @@ def pokemon(tag=""):
                 request_url = urllib2.urlopen(url)
                 result = request_url.read()
                 r = json.loads(result)
-                #---------------------------------------
-
-              
+                #----------------------------------------
                 return redirect("/pokemon/"+str(tag))
             else:#if not a valid pokemon
                 error="Not a valid Pokemon"
@@ -57,12 +55,14 @@ def pokemon(tag=""):
         #---------------------------------------
         
         info=move_r['responseData']['results'][random.randrange(3)]
+        #-----------------making list of img urls------------------------
         imglist=[]
         for imgurl in info:
             for ext in ['.jpg','.png','.jpeg']:
+                #checks if its an img based on extension
                 if ext in ((info[imgurl]).lower()).encode('utf-8').strip():
                     imglist+=[((info[imgurl])).encode('utf-8').strip()]
-        print imglist
+        #----------------------------------------------------------------
         randimg=imglist[random.randrange(len(imglist))]
         return render_template("tagged.html",
                                types=r['types'],
