@@ -1,4 +1,4 @@
-import urllib2,json, random
+import urllib2, json, random
 from flask import Flask, render_template, request, redirect
 import utils
 
@@ -14,6 +14,11 @@ def pokemon(tag=""):
     url = """
     http://pokeapi.co/api/v1/pokemon/%s
     """
+
+    move_url="""
+    https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s&userip=192.168.1.112
+    """
+   
     if tag=="":#if the tag is empty
         if request.method=="GET":
             return render_template("search.html")#search
@@ -23,24 +28,48 @@ def pokemon(tag=""):
                 return redirect("/pokemon/" + str(pokemon) )
             elif utils.isValidPokemon(pokemon,POKELIST):#checks if pokemon is valid
                 tag=POKELIST.index(pokemon)+1#pokemon dex number
+                #--------url stuff-----------------------
                 url = url%(tag)
                 request_url = urllib2.urlopen(url)
                 result = request_url.read()
                 r = json.loads(result)
+                #---------------------------------------
+
+              
                 return redirect("/pokemon/"+str(tag))
             else:#if not a valid pokemon
                 error="Not a valid Pokemon"
                 return render_template("search.html", error=error)
     else:#if tag is not empty
+        #--------url stuff----------------
         url = url%(tag)
         request_url = urllib2.urlopen(url)
         result = request_url.read()
         r = json.loads(result)
+        #---------------------------------
+        move=str(r["moves"][(random.randrange(len(r["moves"])))]['name'].lower())
+        #---------url stuff for img api-------
+        move_url=move_url%(move)
+       
+        request_move_url = urllib2.urlopen(move_url)
+        move_result = request_move_url.read()
+        move_r = json.loads(move_result)
+        #---------------------------------------
+        
+        info=move_r['responseData']['results'][random.randrange(3)]
+        imglist=[]
+        for imgurl in info:
+            for ext in ['.jpg','.png','.jpeg']:
+                if ext in ((info[imgurl]).lower()).encode('utf-8').strip():
+                    imglist+=[((info[imgurl])).encode('utf-8').strip()]
+        print imglist
+        randimg=imglist[random.randrange(len(imglist))]
         return render_template("tagged.html",
                                types=r['types'],
                                name=r['name'].lower(),
                                species=r['species'],
-                               move=r["moves"][(random.randrange(len(r["moves"])))]['name'].lower())
+                               move=move,
+                               randimg=randimg)
    # abilities=[]
    # for item in r['abilities']:
    #     try:
@@ -52,20 +81,8 @@ def pokemon(tag=""):
     
 @app.route("/")
 def index():
-    url="""
-    https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=barack%20obama&userip=192.168.1.112
-    """
-    request_url = urllib2.urlopen(url)
-    result = request_url.read()
-    r = json.loads(result)
-    info=r['responseData']['results'][random.randrange(3)]
-    imglist=[]
-    for imgurl in info:
-        for ext in ['.jpg','.png','.jpeg']:
-            if ext in str(info[imgurl]).lower():
-                imglist+=[str(info[imgurl])]
-    randimg=imglist[random.randrange(len(imglist))]
-    return render_template("test.html", randimg=randimg)
+   
+    return "hello"
 
 if __name__ == "__main__":
    app.debug = True
