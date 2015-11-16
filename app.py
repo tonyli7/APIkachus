@@ -56,7 +56,7 @@ def pokemon(tag=""):
 
         randimg=move_r['responseData']['results'][random.randrange(len(move_r['responseData']['results']))]['url']
         #----------------------------------------------------------------
-        randimg=str(imglist[random.randrange(len(imglist))])
+       
         return render_template("tagged.html",
                                types=r['types'],
                                name=r['name'].lower(),
