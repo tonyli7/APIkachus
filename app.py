@@ -53,15 +53,8 @@ def pokemon(tag=""):
         move_result = request_move_url.read()
         move_r = json.loads(move_result)
         #---------------------------------------
-        
-        info=move_r['responseData']['results'][random.randrange(3)]
-        #-----------------making list of img urls------------------------
-        imglist=[]
-        for imgurl in info:
-            for ext in ['.jpg','.png','.jpeg']:
-                #checks if its an img based on extension
-                if ext in ((info[imgurl]).lower()).encode('utf-8').strip():
-                    imglist+=[((info[imgurl])).encode('utf-8').strip()]
+
+        randimg=move_r['responseData']['results'][random.randrange(len(move_r['responseData']['results']))]['url']
         #----------------------------------------------------------------
         randimg=str(imglist[random.randrange(len(imglist))])
         return render_template("tagged.html",
